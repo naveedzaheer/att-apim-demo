@@ -31,7 +31,7 @@ namespace MoviesREST
         {
             services.AddMvc();
 
-                 var connection = @"Server=tcp:nzdevdemodbserver.database.windows.net,1433;Database=nzdemodb;User ID=nzsqladmin@nzdevdemodbserver;Password=Nz@zure!2o17;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+                 var connection = @"DB-Connection-String";
             services.AddDbContext<FilmyContext>(options => options.UseSqlServer(connection));
 
             services.AddSwaggerGen(c =>
