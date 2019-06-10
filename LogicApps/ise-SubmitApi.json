@@ -1,0 +1,140 @@
+{
+    "$connections": {
+        "value": {
+            "azureblob_1": {
+                "connectionId": "/subscriptions/03228871-7f68-4594-b208-2d8207a65428/resourceGroups/att-apim-demo-rg/providers/Microsoft.Web/connections/azureblob-1",
+                "connectionName": "azureblob-1",
+                "id": "/subscriptions/03228871-7f68-4594-b208-2d8207a65428/resourceGroups/att-apim-demo-rg/providers/Microsoft.Logic/integrationServiceEnvironments/att-ise-demo/managedApis/azureblob"
+            },
+            "office365": {
+                "connectionId": "/subscriptions/03228871-7f68-4594-b208-2d8207a65428/resourceGroups/att-apim-demo-rg/providers/Microsoft.Web/connections/office365",
+                "connectionName": "office365",
+                "id": "/subscriptions/03228871-7f68-4594-b208-2d8207a65428/providers/Microsoft.Web/locations/southcentralus/managedApis/office365"
+            }
+        }
+    },
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "actions": {
+            "Compose": {
+                "inputs": "@base64ToString(body('Get_blob_content_from_url').$content)",
+                "runAfter": {
+                    "Get_blob_content_from_url": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "Compose"
+            },
+            "Get_blob_content_from_url": {
+                "inputs": {
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['azureblob_1']['connectionId']"
+                        }
+                    },
+                    "method": "get",
+                    "path": "/datasets/default/files/@{encodeURIComponent(encodeURIComponent(uriPath(triggerBody()?['apiMetadataFileName'])))}/content",
+                    "queries": {
+                        "inferContentType": false
+                    }
+                },
+                "runAfter": {},
+                "type": "ApiConnection"
+            },
+            "Parse_JSON": {
+                "inputs": {
+                    "content": "@outputs('Compose')",
+                    "schema": {
+                        "properties": {
+                            "apiUrlSuffix": {
+                                "type": "string"
+                            },
+                            "azureSubscriptionId": {
+                                "type": "string"
+                            },
+                            "publisherEmail": {
+                                "type": "string"
+                            },
+                            "resourceGroupName": {
+                                "type": "string"
+                            },
+                            "swaggerFileName": {
+                                "type": "string"
+                            },
+                            "vnetName": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "runAfter": {
+                    "Compose": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ParseJson"
+            },
+            "Send_an_email": {
+                "inputs": {
+                    "body": {
+                        "Body": "@{body('processServiceSubmission')}",
+                        "Subject": "Please confirm VNET peering",
+                        "To": "@body('Parse_JSON')?['publisherEmail']"
+                    },
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['office365']['connectionId']"
+                        }
+                    },
+                    "method": "post",
+                    "path": "/Mail"
+                },
+                "runAfter": {
+                    "processServiceSubmission": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ApiConnection"
+            },
+            "processServiceSubmission": {
+                "inputs": {
+                    "body": "@outputs('Compose')",
+                    "function": {
+                        "id": "/subscriptions/03228871-7f68-4594-b208-2d8207a65428/resourceGroups/att-apim-demo-rg/providers/Microsoft.Web/sites/nzattmgmt/functions/processServiceSubmission"
+                    }
+                },
+                "runAfter": {
+                    "Parse_JSON": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "Function"
+            }
+        },
+        "contentVersion": "1.0.0.0",
+        "outputs": {},
+        "parameters": {
+            "$connections": {
+                "defaultValue": {},
+                "type": "Object"
+            }
+        },
+        "triggers": {
+            "manual": {
+                "inputs": {
+                    "schema": {
+                        "properties": {
+                            "apiMetadataFileName": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "kind": "Http",
+                "type": "Request"
+            }
+        }
+    }
+}

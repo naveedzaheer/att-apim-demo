@@ -1,0 +1,242 @@
+{
+    "$connections": {
+        "value": {
+            "azureblob_1": {
+                "connectionId": "/subscriptions/03228871-7f68-4594-b208-2d8207a65428/resourceGroups/att-apim-demo-rg/providers/Microsoft.Web/connections/azureblob-1",
+                "connectionName": "azureblob-1",
+                "id": "/subscriptions/03228871-7f68-4594-b208-2d8207a65428/resourceGroups/att-apim-demo-rg/providers/Microsoft.Logic/integrationServiceEnvironments/att-ise-demo/managedApis/azureblob"
+            },
+            "office365": {
+                "connectionId": "/subscriptions/03228871-7f68-4594-b208-2d8207a65428/resourceGroups/att-apim-demo-rg/providers/Microsoft.Web/connections/office365",
+                "connectionName": "office365",
+                "id": "/subscriptions/03228871-7f68-4594-b208-2d8207a65428/providers/Microsoft.Web/locations/southcentralus/managedApis/office365"
+            }
+        }
+    },
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "actions": {
+            "Check_Approval_Status": {
+                "actions": {
+                    "Check_Submission_Status": {
+                        "actions": {
+                            "Email_for_success_while_publishing_service": {
+                                "inputs": {
+                                    "body": {
+                                        "Body": "Please complete peering setup: @{body('processServiceSubmission')}",
+                                        "Subject": "Service Publishing Completed Successfully",
+                                        "To": "@body('Parse_JSON')?['publisherEmail']"
+                                    },
+                                    "host": {
+                                        "connection": {
+                                            "name": "@parameters('$connections')['office365']['connectionId']"
+                                        }
+                                    },
+                                    "method": "post",
+                                    "path": "/Mail"
+                                },
+                                "runAfter": {},
+                                "type": "ApiConnection"
+                            }
+                        },
+                        "else": {
+                            "actions": {
+                                "Email_for_failure_while_publishing_service": {
+                                    "inputs": {
+                                        "body": {
+                                            "Body": "Error Info: @{body('processServiceSubmission')}",
+                                            "Subject": "Service Publishing Failed Due to Error",
+                                            "To": "@body('Parse_JSON')?['publisherEmail']"
+                                        },
+                                        "host": {
+                                            "connection": {
+                                                "name": "@parameters('$connections')['office365']['connectionId']"
+                                            }
+                                        },
+                                        "method": "post",
+                                        "path": "/Mail"
+                                    },
+                                    "runAfter": {},
+                                    "type": "ApiConnection"
+                                }
+                            }
+                        },
+                        "expression": {
+                            "and": [
+                                {
+                                    "equals": [
+                                        "@outputs('processServiceSubmission')['statusCode']",
+                                        200
+                                    ]
+                                }
+                            ]
+                        },
+                        "runAfter": {
+                            "processServiceSubmission": [
+                                "Succeeded"
+                            ]
+                        },
+                        "type": "If"
+                    },
+                    "processServiceSubmission": {
+                        "inputs": {
+                            "body": "@outputs('Compose')",
+                            "function": {
+                                "id": "/subscriptions/03228871-7f68-4594-b208-2d8207a65428/resourceGroups/att-apim-demo-rg/providers/Microsoft.Web/sites/nzattmgmt/functions/processServiceSubmission"
+                            }
+                        },
+                        "runAfter": {},
+                        "type": "Function"
+                    }
+                },
+                "else": {
+                    "actions": {
+                        "Send_an_email": {
+                            "inputs": {
+                                "body": {
+                                    "Body": "Please contact your API Support team. ",
+                                    "Subject": "Service Submission Rejected",
+                                    "To": "@body('Parse_JSON')?['publisherEmail']"
+                                },
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['office365']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "path": "/Mail"
+                            },
+                            "runAfter": {},
+                            "type": "ApiConnection"
+                        }
+                    }
+                },
+                "expression": {
+                    "and": [
+                        {
+                            "equals": [
+                                "@body('Send_approval_email')?['SelectedOption']",
+                                "Approve"
+                            ]
+                        }
+                    ]
+                },
+                "runAfter": {
+                    "Send_approval_email": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "If"
+            },
+            "Compose": {
+                "inputs": "@base64ToString(body('Get_blob_content_from_url').$content)",
+                "runAfter": {
+                    "Get_blob_content_from_url": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "Compose"
+            },
+            "Get_blob_content_from_url": {
+                "inputs": {
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['azureblob_1']['connectionId']"
+                        }
+                    },
+                    "method": "get",
+                    "path": "/datasets/default/files/@{encodeURIComponent(encodeURIComponent(uriPath(triggerBody()?['apiMetadataFileName'])))}/content",
+                    "queries": {
+                        "inferContentType": false
+                    }
+                },
+                "runAfter": {},
+                "type": "ApiConnection"
+            },
+            "Parse_JSON": {
+                "inputs": {
+                    "content": "@outputs('Compose')",
+                    "schema": {
+                        "properties": {
+                            "apiUrlSuffix": {
+                                "type": "string"
+                            },
+                            "azureSubscriptionId": {
+                                "type": "string"
+                            },
+                            "publisherEmail": {
+                                "type": "string"
+                            },
+                            "resourceGroupName": {
+                                "type": "string"
+                            },
+                            "swaggerFileName": {
+                                "type": "string"
+                            },
+                            "vnetName": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "runAfter": {
+                    "Compose": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ParseJson"
+            },
+            "Send_approval_email": {
+                "inputs": {
+                    "body": {
+                        "Message": {
+                            "Body": "@{outputs('Compose')}",
+                            "Importance": "Normal",
+                            "Options": "Approve, Reject",
+                            "Subject": "Request for API Submission",
+                            "To": "azureadmin@nzazuredemo.com"
+                        },
+                        "NotificationUrl": "@{listCallbackUrl()}"
+                    },
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['office365']['connectionId']"
+                        }
+                    },
+                    "path": "/approvalmail/$subscriptions"
+                },
+                "runAfter": {
+                    "Parse_JSON": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ApiConnectionWebhook"
+            }
+        },
+        "contentVersion": "1.0.0.0",
+        "outputs": {},
+        "parameters": {
+            "$connections": {
+                "defaultValue": {},
+                "type": "Object"
+            }
+        },
+        "triggers": {
+            "manual": {
+                "inputs": {
+                    "schema": {
+                        "properties": {
+                            "apiMetadataFileName": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "kind": "Http",
+                "type": "Request"
+            }
+        }
+    }
+}

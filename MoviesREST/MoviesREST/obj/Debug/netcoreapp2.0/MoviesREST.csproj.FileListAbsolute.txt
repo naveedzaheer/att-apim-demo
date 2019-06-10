@@ -1,0 +1,12 @@
+C:\NZ\VSTS\NZADemo\ApiMgmtDemoApps\MoviesREST\MoviesREST\bin\Debug\netcoreapp2.0\MoviesREST.deps.json
+C:\NZ\VSTS\NZADemo\ApiMgmtDemoApps\MoviesREST\MoviesREST\bin\Debug\netcoreapp2.0\MoviesREST.runtimeconfig.json
+C:\NZ\VSTS\NZADemo\ApiMgmtDemoApps\MoviesREST\MoviesREST\bin\Debug\netcoreapp2.0\MoviesREST.runtimeconfig.dev.json
+C:\NZ\VSTS\NZADemo\ApiMgmtDemoApps\MoviesREST\MoviesREST\bin\Debug\netcoreapp2.0\MoviesREST.dll
+C:\NZ\VSTS\NZADemo\ApiMgmtDemoApps\MoviesREST\MoviesREST\bin\Debug\netcoreapp2.0\MoviesREST.pdb
+C:\NZ\VSTS\NZADemo\ApiMgmtDemoApps\MoviesREST\MoviesREST\obj\Debug\netcoreapp2.0\MoviesREST.csprojAssemblyReference.cache
+C:\NZ\VSTS\NZADemo\ApiMgmtDemoApps\MoviesREST\MoviesREST\obj\Debug\netcoreapp2.0\MoviesREST.csproj.CoreCompileInputs.cache
+C:\NZ\VSTS\NZADemo\ApiMgmtDemoApps\MoviesREST\MoviesREST\obj\Debug\netcoreapp2.0\MoviesREST.AssemblyInfoInputs.cache
+C:\NZ\VSTS\NZADemo\ApiMgmtDemoApps\MoviesREST\MoviesREST\obj\Debug\netcoreapp2.0\MoviesREST.AssemblyInfo.cs
+C:\NZ\VSTS\NZADemo\ApiMgmtDemoApps\MoviesREST\MoviesREST\obj\Debug\netcoreapp2.0\MoviesREST.dll
+C:\NZ\VSTS\NZADemo\ApiMgmtDemoApps\MoviesREST\MoviesREST\obj\Debug\netcoreapp2.0\MoviesREST.pdb
+C:\NZ\VSTS\NZADemo\ApiMgmtDemoApps\MoviesREST\MoviesREST\obj\Debug\netcoreapp2.0\UserSecretsAssemblyInfo.cs

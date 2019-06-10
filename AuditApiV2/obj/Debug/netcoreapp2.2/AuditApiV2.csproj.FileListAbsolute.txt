@@ -1,0 +1,14 @@
+C:\NZ\VSTS\NZADemo\AuditApi\AuditApiV2\bin\Debug\netcoreapp2.2\AuditApiV2.deps.json
+C:\NZ\VSTS\NZADemo\AuditApi\AuditApiV2\bin\Debug\netcoreapp2.2\AuditApiV2.runtimeconfig.json
+C:\NZ\VSTS\NZADemo\AuditApi\AuditApiV2\bin\Debug\netcoreapp2.2\AuditApiV2.runtimeconfig.dev.json
+C:\NZ\VSTS\NZADemo\AuditApi\AuditApiV2\bin\Debug\netcoreapp2.2\AuditApiV2.dll
+C:\NZ\VSTS\NZADemo\AuditApi\AuditApiV2\obj\Debug\netcoreapp2.2\AuditApiV2.csproj.CoreCompileInputs.cache
+C:\NZ\VSTS\NZADemo\AuditApi\AuditApiV2\obj\Debug\netcoreapp2.2\AuditApiV2.RazorAssemblyInfo.cache
+C:\NZ\VSTS\NZADemo\AuditApi\AuditApiV2\obj\Debug\netcoreapp2.2\AuditApiV2.RazorAssemblyInfo.cs
+C:\NZ\VSTS\NZADemo\AuditApi\AuditApiV2\obj\Debug\netcoreapp2.2\AuditApiV2.AssemblyInfoInputs.cache
+C:\NZ\VSTS\NZADemo\AuditApi\AuditApiV2\obj\Debug\netcoreapp2.2\AuditApiV2.AssemblyInfo.cs
+C:\NZ\VSTS\NZADemo\AuditApi\AuditApiV2\obj\Debug\netcoreapp2.2\AuditApiV2.RazorTargetAssemblyInfo.cache
+C:\NZ\VSTS\NZADemo\AuditApi\AuditApiV2\bin\Debug\netcoreapp2.2\AuditApiV2.pdb
+C:\NZ\VSTS\NZADemo\AuditApi\AuditApiV2\obj\Debug\netcoreapp2.2\AuditApiV2.dll
+C:\NZ\VSTS\NZADemo\AuditApi\AuditApiV2\obj\Debug\netcoreapp2.2\AuditApiV2.pdb
+C:\NZ\VSTS\NZADemo\AuditApi\AuditApiV2\obj\Debug\netcoreapp2.2\AuditApiV2.csprojAssemblyReference.cache

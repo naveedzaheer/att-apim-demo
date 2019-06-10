@@ -1,0 +1,8 @@
+{
+    "azureSubscriptionId":"bcdeb3b2-8c3a-4548-8242-e486969cb735", 
+    "resourceGroupName":"att-apimdemo-rg",
+    "vnetName":"att-svc1-vnet",
+    "publisherEmail":"dak.prescott@nzazuredemo.com",
+    "swaggerFileName":"Movies.json",
+    "apiUrlSuffix":"movies"
+}

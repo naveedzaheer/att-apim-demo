@@ -1,0 +1,222 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "v1",
+        "title": "Movies"
+    },
+    "host": "10.1.0.5",
+    "basePath": "/movieapi/",
+    "schemes": [
+        "https"
+    ],
+    "paths": {
+        "/api/Movies": {
+            "get": {
+                "tags": [
+                    "Movies"
+                ],
+                "operationId": "ApiMoviesGet",
+                "consumes": [],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "directorName",
+                        "in": "query",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "rating",
+                        "in": "query",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Movie"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Movies"
+                ],
+                "operationId": "ApiMoviesPost",
+                "consumes": [
+                    "application/json-patch+json",
+                    "application/json",
+                    "text/json",
+                    "application/*+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "movie",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Movie"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/api/Movies/{id}": {
+            "get": {
+                "tags": [
+                    "Movies"
+                ],
+                "operationId": "ApiMoviesByIdGet",
+                "consumes": [],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Movies"
+                ],
+                "operationId": "ApiMoviesByIdPut",
+                "consumes": [
+                    "application/json-patch+json",
+                    "application/json",
+                    "text/json",
+                    "application/*+json"
+                ],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    {
+                        "name": "movie",
+                        "in": "body",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/definitions/Movie"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Movies"
+                ],
+                "operationId": "ApiMoviesByIdDelete",
+                "consumes": [],
+                "produces": [],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Movie": {
+            "type": "object",
+            "properties": {
+                "filmId": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "filmName": {
+                    "type": "string"
+                },
+                "directorName": {
+                    "type": "string"
+                },
+                "countryName": {
+                    "type": "string"
+                },
+                "language": {
+                    "type": "string"
+                },
+                "certificate": {
+                    "type": "string"
+                },
+                "studioName": {
+                    "type": "string"
+                },
+                "filmReleaseDate": {
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "filmSynopsis": {
+                    "type": "string"
+                },
+                "filmRunTimeMinutes": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "filmBudgetDollars": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "filmBoxOfficeDollars": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "filmOscarNominations": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "filmOscarWins": {
+                    "format": "int32",
+                    "type": "integer"
+                }
+            }
+        }
+    }
+}
